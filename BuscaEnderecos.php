@@ -7,7 +7,7 @@ ini_set('display_errors', 'On');
 //Array que armazena as ocorrências globalmente
 $todasocorrencias = array();
 
-echo "\u{1F575}  Desenvolvido por Ari Stopassola Junior <ari@perito.inf.br>.\n"; //Símbolo unicode de alerta
+echo "\u{1F575}  Desenvolvido por Ari Stopassola Junior <ari@perito.inf.br> - versão 0.2.\n"; //Símbolo unicode de alerta
 
 if(!isset($argv[1])){
 	echo "\u{26A0} Não foi passado o parâmetro informando o caminho a ser vasculhado.\n"; //Símbolo unicode de alerta
@@ -32,9 +32,21 @@ foreach($arquivos as $indice => $arq)
 	{
 		foreach($ocorrencias[0] as $item){
 			echo "\u{20BF} "; //Símbolo unicode do Bitcoin
-			echo $item."\t\t".$caminho."\n";
+			echo $item."\t\t\t".$caminho."\n";
 		}
 	}
+
+	/*	
+	Endereços Bitcoin Bech32
+	Após a string "bc1" haverá de 6 à 90 caracteres, exceto 1, b, i e o.
+	*/
+	if(preg_match_all('/bc1[ac-hj-np-z02-9]{6,90}/', $conteudo, $ocorrencias))
+	{
+		foreach($ocorrencias[0] as $item){
+			echo "\u{20BF} "; //Símbolo unicode do Bitcoin
+			echo $item."\t\t".$caminho."\n";
+		}
+	}	
 	
 	/*
 	Ethereum começa com 0x e possui 42 caracteres alfanuméricos de tamanho
@@ -43,7 +55,19 @@ foreach($arquivos as $indice => $arq)
 	{
 		foreach($ocorrencias[0] as $item){
 			echo "\u{039E} "; //Símbolo unicode do Ethereum
+			echo $item."\t\t".$caminho."\n";
+		}
+	}
+	
+	/*
+	Monero começa com o dígito 4 e possui 94 caracteres
+	*/
+	if(preg_match_all('/4\w{94}/', $conteudo, $ocorrencias))
+	{
+		foreach($ocorrencias[0] as $item){
+			echo "\u{24C2} "; //Símbolo unicode do Monero
 			echo $item."\t".$caminho."\n";
 		}
 	}
+	
 }
